@@ -12,8 +12,10 @@ const rateLimit = require("express-rate-limit");
 
 // middleware shit
 const nocache = require('nocache');
+const cors = require('cors');
 app.use(nocache());
 app.use(express.json());
+app.use(cors());
 
 app.get('/', function (req, res) {
   res.send('Hii! It\'s me, the LIT Devs logo API!')
