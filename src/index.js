@@ -8,6 +8,7 @@ const app = express()
 const vukkyLogo = fs.readFileSync(`${__dirname}/vukky.svg`, 'utf8'); 
 const vukkyLogoBG = fs.readFileSync(`${__dirname}/vukkybg.svg`, 'utf8'); 
 var vukkyColor = "#00a8f3";
+const rateLimit = require("express-rate-limit");
 
 // middleware shit
 const nocache = require('nocache');
@@ -32,11 +33,24 @@ app.get('/api/color', function (req, res) {
   res.send({"color": vukkyColor}); 
 })
 
+const editRateLimit = rateLimit({
+	windowMs: 1000 * 60,
+	max: 1,
+	handler: function(req, res) {
+		res.status(429).send("lets not cause epilepsy attack")
+	},
+	keyGenerator: function (req /*, res*/) {
+		return req.headers["cf-connecting-ip"];
+	}
+});
+
 app.post('/api/edit', function (req, res) {
   if(!req.body?.color) return res.status(400).send("Bad request: No color provided");
   if(!/^#[0-9a-fA-F]{6}$/.test(req.body.color)) return res.status(400).send("Bad request: Color is not valid");
-  vukkyColor = req.body.color;
-  res.sendStatus(200);
+  editRateLimit(req, res, () => {
+    vukkyColor = req.body.color;
+    res.sendStatus(200);
+  })
 })
 
 app.listen(90)
