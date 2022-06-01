@@ -29,7 +29,7 @@ app.get('/api/vukky/bg', function (req, res) {
 })
 
 app.get('/api/color', function (req, res) {
-  res.send(vukkyColor); 
+  res.send({"color": vukkyColor}); 
 })
 
 app.post('/api/edit', function (req, res) {
