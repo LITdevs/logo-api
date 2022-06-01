@@ -8,6 +8,8 @@ const app = express()
 const vukkyLogo = fs.readFileSync(`${__dirname}/vukky.svg`, 'utf8'); 
 const vukkyLogoBG = fs.readFileSync(`${__dirname}/vukkybg.svg`, 'utf8'); 
 var vukkyColor = "#00a8f3";
+var vukkyBackground = "#7289da";
+var vukkyFlame = "#ff3f3f";
 const rateLimit = require("express-rate-limit");
 
 // middleware shit
@@ -29,6 +31,8 @@ app.get('/api/vukky', function (req, res) {
 app.get('/api/vukky/bg', function (req, res) {
   res.header("Content-Type","image/svg+xml");
   res.send(vukkyLogoBG.replace("$USERSELECTEDCOLORHERE", vukkyColor));
+  res.send(vukkyLogoBG.replace("$USERSELECTEDBGHERE", vukkyBackground));
+  res.send(vukkyLogoBG.replace("$USERSELECTEDFLAMEHERE", vukkyFlame));
 })
 
 app.get('/api/color', function (req, res) {
@@ -47,10 +51,16 @@ const editRateLimit = rateLimit({
 });
 
 app.post('/api/edit', function (req, res) {
-  if(!req.body?.color) return res.status(400).send("Bad request: No color provided");
-  if(!/^#[0-9a-fA-F]{6}$/.test(req.body.color)) return res.status(400).send("Bad request: Color is not valid");
+  if(!req.body?.color) return res.status(400).send("Bad request: No main color provided");
+  if(!req.body?.bg) return res.status(400).send("Bad request: No background color provided");
+  if(!req.body?.flame) return res.status(400).send("Bad request: No flame color provided");
+  if(!/^#[0-9a-fA-F]{6}$/.test(req.body.color)) return res.status(400).send("Bad request: Main color is not valid");
+  if(!/^#[0-9a-fA-F]{6}$/.test(req.body.bg)) return res.status(400).send("Bad request: Background is not valid");
+  if(!/^#[0-9a-fA-F]{6}$/.test(req.body.flame)) return res.status(400).send("Bad request: Flame is not valid");
   editRateLimit(req, res, () => {
     vukkyColor = req.body.color;
+    vukkyBackground = req.body.bg;
+    vukkyFlame = req.body.flame;
     res.sendStatus(200);
   })
 })
