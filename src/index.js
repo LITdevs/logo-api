@@ -36,7 +36,7 @@ app.get('/api/vukky/bg', function (req, res) {
 })
 
 app.get('/api/color', function (req, res) {
-  res.send({"color": vukkyColor}); 
+  res.send({"color": vukkyColor, "bg": vukkyBackground, "flame": vukkyFlame}); 
 })
 
 const editRateLimit = rateLimit({
