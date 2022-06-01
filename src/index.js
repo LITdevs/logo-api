@@ -19,16 +19,20 @@ app.get('/', function (req, res) {
 })
 
 app.get('/api/vukky', function (req, res) {
-  if(req.query.bg == "true") {
-    res.header("Content-Type","image/svg+xml");
-    res.send(vukkyLogoBG.replace("$USERSELECTEDCOLORHERE", vukkyColor));
-  } else {
-    res.header("Content-Type","image/svg+xml");
-    res.send(vukkyLogo.replace("$USERSELECTEDCOLORHERE", vukkyColor));
-  }
+  res.header("Content-Type","image/svg+xml");
+  res.send(vukkyLogo.replace("$USERSELECTEDCOLORHERE", vukkyColor));
 })
 
-app.post('/api/vukky/edit', function (req, res) {
+app.get('/api/vukky/bg', function (req, res) {
+  res.header("Content-Type","image/svg+xml");
+  res.send(vukkyLogoBG.replace("$USERSELECTEDCOLORHERE", vukkyColor));
+})
+
+app.get('/api/color', function (req, res) {
+  res.send(vukkyColor); 
+})
+
+app.post('/api/edit', function (req, res) {
   if(!req.body?.color) return res.status(400).send("Bad request: No color provided");
   if(!/^#[0-9a-fA-F]{6}$/.test(req.body.color)) return res.status(400).send("Bad request: Color is not valid");
   vukkyColor = req.body.color;
