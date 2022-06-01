@@ -30,9 +30,7 @@ app.get('/api/vukky', function (req, res) {
 
 app.get('/api/vukky/bg', function (req, res) {
   res.header("Content-Type","image/svg+xml");
-  res.send(vukkyLogoBG.replace("$USERSELECTEDCOLORHERE", vukkyColor));
-  res.send(vukkyLogoBG.replace("$USERSELECTEDBGHERE", vukkyBackground));
-  res.send(vukkyLogoBG.replace("$USERSELECTEDFLAMEHERE", vukkyFlame));
+  res.send(vukkyLogoBG.replace("$USERSELECTEDCOLORHERE", vukkyColor).replace("$USERSELECTEDBGHERE", vukkyBackground).replace("$USERSELECTEDFLAMEHERE", vukkyFlame));
 })
 
 app.get('/api/color', function (req, res) {
