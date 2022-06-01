@@ -5,6 +5,8 @@
 const fs = require('fs')
 const express = require('express')
 const app = express()
+const vukkyLogo = fs.readFileSync(`${__dirname}/vukky.svg`, 'utf8'); 
+const vukkyLogoBG = fs.readFileSync(`${__dirname}/vukkybg.svg`, 'utf8'); 
 var vukkyColor = "#00a8f3";
 
 // middleware shit
@@ -17,19 +19,20 @@ app.get('/', function (req, res) {
 })
 
 app.get('/api/vukky', function (req, res) {
-  let vukkyLogo = fs.readFileSync(`${__dirname}/vukky.svg`, 'utf8');
-  vukkyLogo = vukkyLogo.replace("$USERSELECTEDCOLORHERE", vukkyColor);
-  res.header("Content-Type","image/svg+xml");
-  res.send(vukkyLogo);
+  if(req.query.bg == "true") {
+    res.header("Content-Type","image/svg+xml");
+    res.send(vukkyLogoBG.replace("$USERSELECTEDCOLORHERE", vukkyColor));
+  } else {
+    res.header("Content-Type","image/svg+xml");
+    res.send(vukkyLogo.replace("$USERSELECTEDCOLORHERE", vukkyColor));
+  }
 })
 
-app.post('/api/vukky', function (req, res) {
-  if(req.body && req.body.color && /^#[0-9a-fA-F]{6}$/.test(req.body.color)) {
-    vukkyColor = req.body.color;
-    res.status(200).send("OK");
-  } else {
-    res.status(400).send("Bad request");
-  }
+app.post('/api/vukky/edit', function (req, res) {
+  if(!req.body?.color) return res.status(400).send("Bad request: No color provided");
+  if(!/^#[0-9a-fA-F]{6}$/.test(req.body.color)) return res.status(400).send("Bad request: Color is not valid");
+  vukkyColor = req.body.color;
+  res.sendStatus(200);
 })
 
 app.listen(3000)
