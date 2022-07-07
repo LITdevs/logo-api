@@ -61,7 +61,7 @@ app.post('/api/edit', function (req, res) {
 })
 
 app.get('*', function (req, res) {
-  res.sendFile('index.html', {root: '../public'})
+  res.sendFile('index.html', {root: './public'})
 })
 
 app.listen(90)
