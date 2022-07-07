@@ -18,10 +18,7 @@ const cors = require('cors');
 app.use(nocache());
 app.use(express.json());
 app.use(cors());
-
-app.get('/', function (req, res) {
-  res.send('Hii! It\'s me, the LIT Devs logo API!')
-})
+app.use("/resources", express.static('public/resources'));
 
 app.get('/api/vukky', function (req, res) {
   res.header("Content-Type","image/svg+xml");
@@ -61,6 +58,10 @@ app.post('/api/edit', function (req, res) {
     vukkyFlame = req.body.flame;
     res.sendStatus(200);
   })
+})
+
+app.get('*', function (req, res) {
+  res.sendFile(__dirname + '/public/index.html')
 })
 
 app.listen(90)

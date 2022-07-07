@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Logo API</title>
+        <style>
+            #wrapper {
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                text-align: center;
+            }
+            #logo {
+                animation: rainbow 3s infinite;
+            }
+            @keyframes rainbow {
+                from {
+                    filter: hue-rotate(0deg)
+                }
+                to {
+                    filter: hue-rotate(360deg)
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div id="wrapper">
+            <a href="/logodesigner"><img id="logo" src="/resources/prideky.png"></a>
+            <p>you can change our logo :)</p>
+        </div>
+    </body>
+</html>
