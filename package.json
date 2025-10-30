@@ -1,16 +1,13 @@
 {
   "name": "logo-api",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Remotely change the LIT Devs logo!",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/LITdevs/logo-api.git"
   },
-  "author": "",
+  "author": "Hakase",
   "license": "UNLICENSED",
   "bugs": {
     "url": "https://github.com/LITdevs/logo-api/issues"
@@ -18,8 +15,8 @@
   "homepage": "https://github.com/LITdevs/logo-api#readme",
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^4.18.1",
-    "express-rate-limit": "^6.4.0",
-    "nocache": "^3.0.4"
+    "express": "^5.1.0",
+    "express-rate-limit": "^8.2.0",
+    "nocache": "^4.0.0"
   }
 }

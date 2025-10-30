@@ -7,14 +7,15 @@ const express = require('express')
 const app = express()
 const vukkyLogo = fs.readFileSync(`${__dirname}/vukky.svg`, 'utf8'); 
 const vukkyLogoBG = fs.readFileSync(`${__dirname}/vukkybg.svg`, 'utf8'); 
-var vukkyColor = "#00a8f3";
-var vukkyBackground = "#7289da";
-var vukkyFlame = "#ff3f3f";
+let vukkyColor = "#00a8f3";
+let vukkyBackground = "#7289da";
+let vukkyFlame = "#ff3f3f";
 const rateLimit = require("express-rate-limit");
 
-// middleware shit
+// middleware stuff
 const nocache = require('nocache');
 const cors = require('cors');
+app.set("trust proxy", process.env.LOGO_PROXY_COUNT || 1)
 app.use(nocache());
 app.use(express.json());
 app.use(cors());
@@ -31,17 +32,14 @@ app.get('/api/vukky/bg', function (req, res) {
 })
 
 app.get('/api/color', function (req, res) {
-  res.send({"color": vukkyColor, "bg": vukkyBackground, "flame": vukkyFlame}); 
+  res.send({"color": vukkyColor, "bg": vukkyBackground, "flame": vukkyFlame});
 })
 
 const editRateLimit = rateLimit({
 	windowMs: 1000 * 60,
-	max: 1,
+	max: 2,
 	handler: function(req, res) {
-		res.status(429).send("lets not cause epilepsy attack")
-	},
-	keyGenerator: function (req /*, res*/) {
-		return req.headers["cf-connecting-ip"];
+		res.status(429).send("hey be careful! that's enough for now")
 	}
 });
 
@@ -60,8 +58,8 @@ app.post('/api/edit', function (req, res) {
   })
 })
 
-app.get('*', function (req, res) {
+app.get('/', function (req, res) {
   res.sendFile('index.html', {root: './public'})
 })
 
-app.listen(90)
+app.listen(process.env.LOGO_PORT || 90)
